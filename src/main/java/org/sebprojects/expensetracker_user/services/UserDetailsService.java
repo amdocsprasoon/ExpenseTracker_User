@@ -6,6 +6,9 @@ import org.sebprojects.expensetracker_user.repositories.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserDetailsService {
 
@@ -48,5 +51,17 @@ public class UserDetailsService {
 
     }
 
+    public List<UserInfoDto> getAllUsers() {
+        return userDetailsRepository.findAll().stream()
+                .map(userDetails -> UserInfoDto.builder()
+                        .userId(userDetails.getUserId())
+                        .email(userDetails.getEmail())
+                        .username(userDetails.getUserName())
+                        .firstName(userDetails.getFirstName())
+                        .lastName(userDetails.getLastName())
+                        .phoneNumber(userDetails.getPhoneNumber())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
 
